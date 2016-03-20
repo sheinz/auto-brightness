@@ -40,9 +40,11 @@ class AutoBrightnessService(dbus.service.Object):
         self.notifier.auto_brightness(self._auto)
         if self._auto:
             self._als.start()
+            self._br_ctrl.start()
             self._process_timer.start(1000)
         else:
             self._als.stop()
+            self._br_ctrl.stop()
             self._process_timer.stop()
 
     def process(self):
@@ -59,6 +61,7 @@ class AutoBrightnessService(dbus.service.Object):
     def stop(self):
         self._process_timer.stop()
         self._als.stop()
+        self._br_ctrl.stop()
 
     @dbus.service.method(dbus_interface='com.github.sheinz.autobrightness')
     def up(self):
